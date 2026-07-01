@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Attendance</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <h1>My Attendance</h1>
+  <nav>
+    <span id="welcomeText" style="margin-right:16px;"></span>
+    <button onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>Subject-wise Attendance</h2>
+    <p class="error-msg" id="errorMsg"></p>
+
+    <table id="attTable" style="display:none;">
+      <thead>
+        <tr><th>Subject</th><th>Code</th><th>Classes Held</th><th>Present</th><th>Percentage</th></tr>
+      </thead>
+      <tbody id="attBody"></tbody>
+    </table>
+    <p class="small-note">Percentages below 75% are shown in red.</p>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  const user = requireRole("student");
+  if (user) {
+    document.getElementById("welcomeText").textContent = `Hi, ${user.name} (${user.roll_no})`;
+  }
+
+  async function loadAttendance() {
+    const errorMsg = document.getElementById("errorMsg");
+    try {
+      const rows = await apiFetch(`/attendance/student/${user.id}`);
+      const tbody = document.getElementById("attBody");
+      tbody.innerHTML = rows
+        .map((r) => {
+          const pct = r.percentage === null ? 0 : r.percentage;
+          const cls = pct >= 75 ? "pct-good" : "pct-low";
+          return `
+          <tr>
+            <td>${r.subject_name}</td>
+            <td>${r.subject_code}</td>
+            <td>${r.total_classes}</td>
+            <td>${r.present_count}</td>
+            <td class="${cls}">${pct}%</td>
+          </tr>`;
+        })
+        .join("");
+      document.getElementById("attTable").style.display = "table";
+    } catch (err) {
+      errorMsg.textContent = err.message;
+    }
+  }
+
+  if (user) loadAttendance();
+</script>
+
+</body>
+</html>

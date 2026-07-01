@@ -1,0 +1,199 @@
+:root {
+  --navy: #1f3a5f;
+  --navy-light: #2c527f;
+  --gray: #555;
+  --border: #ddd;
+  --bg: #f4f6f9;
+  --present: #1e8e5a;
+  --absent: #c62828;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: #222;
+}
+
+header.topbar {
+  background: var(--navy);
+  color: #fff;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header.topbar h1 { font-size: 20px; margin: 0; }
+
+header.topbar nav a, header.topbar button {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 16px;
+  font-size: 14px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+header.topbar nav a:hover, header.topbar button:hover { background: rgba(255,255,255,0.15); }
+
+.container {
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+}
+
+.login-card {
+  background: #fff;
+  padding: 36px;
+  border-radius: 10px;
+  width: 360px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.login-card h2 {
+  margin-top: 0;
+  color: var(--navy);
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--gray);
+  border-bottom: 2px solid transparent;
+}
+
+.tabs button.active {
+  color: var(--navy);
+  border-bottom: 2px solid var(--navy);
+  font-weight: 600;
+}
+
+label { display: block; margin: 12px 0 4px; font-size: 13px; color: var(--gray); }
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+button.primary {
+  width: 100%;
+  margin-top: 18px;
+  padding: 11px;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button.primary:hover { background: var(--navy-light); }
+
+.error-msg {
+  color: var(--absent);
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: center;
+  min-height: 16px;
+}
+
+.success-msg {
+  color: var(--present);
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: center;
+  min-height: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+th { background: #eef1f6; color: var(--navy); }
+
+.status-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.status-toggle button {
+  border: none;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.status-toggle button.present.active { background: var(--present); color: #fff; }
+.status-toggle button.absent.active { background: var(--absent); color: #fff; }
+
+.grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pct-good { color: var(--present); font-weight: 600; }
+.pct-low { color: var(--absent); font-weight: 600; }
+
+.actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.actions-bar select, .actions-bar input[type="date"] {
+  width: auto;
+}
+
+.small-note { font-size: 12px; color: var(--gray); margin-top: 6px; }

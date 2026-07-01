@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Attendance Reports</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Attendance Reports</h1>
+  <nav>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="mark-attendance.html">Mark Attendance</a>
+    <button onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="card">
+    <div class="actions-bar">
+      <div>
+        <label for="subjectSelect">Subject</label>
+        <select id="subjectSelect" onchange="loadReport()"></select>
+      </div>
+    </div>
+
+    <p class="error-msg" id="errorMsg"></p>
+
+    <table id="reportTable" style="display:none;">
+      <thead>
+        <tr><th>Roll No</th><th>Name</th><th>Classes Held</th><th>Present</th><th>Percentage</th></tr>
+      </thead>
+      <tbody id="reportBody"></tbody>
+    </table>
+    <p class="small-note">Students below 75% attendance are highlighted in red.</p>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  requireRole("staff");
+
+  async function loadSubjects() {
+    try {
+      const subjects = await apiFetch("/attendance/subjects");
+      const select = document.getElementById("subjectSelect");
+      select.innerHTML = subjects
+        .map((s) => `<option value="${s.id}">${s.subject_name} (${s.subject_code})</option>`)
+        .join("");
+      if (subjects.length > 0) loadReport();
+    } catch (err) {
+      document.getElementById("errorMsg").textContent = err.message;
+    }
+  }
+  loadSubjects();
+
+  async function loadReport() {
+    const subject_id = document.getElementById("subjectSelect").value;
+    const errorMsg = document.getElementById("errorMsg");
+    errorMsg.textContent = "";
+    if (!subject_id) return;
+
+    try {
+      const rows = await apiFetch(`/attendance/report/${subject_id}`);
+      const tbody = document.getElementById("reportBody");
+      tbody.innerHTML = rows
+        .map((r) => {
+          const pct = r.percentage === null ? 0 : r.percentage;
+          const cls = pct >= 75 ? "pct-good" : "pct-low";
+          return `
+          <tr>
+            <td>${r.roll_no}</td>
+            <td>${r.name}</td>
+            <td>${r.total_classes}</td>
+            <td>${r.present_count}</td>
+            <td class="${cls}">${pct}%</td>
+          </tr>`;
+        })
+        .join("");
+      document.getElementById("reportTable").style.display = "table";
+    } catch (err) {
+      errorMsg.textContent = err.message;
+    }
+  }
+</script>
+
+</body>
+</html>

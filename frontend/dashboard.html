@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Staff Dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <h1>Attendance System — Staff Dashboard</h1>
+  <nav>
+    <span id="welcomeText" style="margin-right:16px;"></span>
+    <a href="mark-attendance.html">Mark Attendance</a>
+    <a href="reports.html">Reports</a>
+    <button onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>Welcome</h2>
+    <p>Use the navigation above to mark today's attendance for a subject, or view attendance reports and percentages for your students.</p>
+  </div>
+
+  <div class="grid-row">
+    <div class="card">
+      <h3>Mark Attendance</h3>
+      <p class="small-note">Select a subject and date, then mark each student Present or Absent.</p>
+      <a href="mark-attendance.html"><button class="primary">Go to Mark Attendance</button></a>
+    </div>
+    <div class="card">
+      <h3>View Reports</h3>
+      <p class="small-note">See attendance percentage for every student, subject-wise.</p>
+      <a href="reports.html"><button class="primary">Go to Reports</button></a>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  const user = requireRole("staff");
+  if (user) {
+    document.getElementById("welcomeText").textContent = `Hi, ${user.name}`;
+  }
+</script>
+
+</body>
+</html>
